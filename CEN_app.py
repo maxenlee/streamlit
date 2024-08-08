@@ -3,25 +3,21 @@ import pandas as pd
 from textblob import TextBlob
 import plotly.express as px
 import requests
-import nltk
+import subprocess
 
-# Download necessary NLTK data
-nltk.download('punkt')
-
-# Define keywords or phrases that are typically found in commercials
-commercial_keywords = ["learn more", "visit", "call now", "buy", "order", "subscribe", "save"]
-
-# Define search keywords
-search_keywords = [
-    "Education", "Public Education", "Students", "Schools", "Kids", "Elementary School",
-    "Secondary School", "High School", "Charter Schools", "Education Policy", "Teacher",
-    "Classroom", "Curriculum", "Academic", "Lesson", "Homework", "School District", "PTA",
-    "Extracurricular", "Special Education", "Preschool", "Education Reform", "Literacy",
-    "Education Technology", "Tutoring", "School Administration"
-]
+# Function to download NLTK data
+def download_nltk_data():
+    try:
+        import nltk
+        nltk.download('punkt')
+    except ImportError:
+        subprocess.run(['python', '-m', 'pip', 'install', 'nltk'])
+        import nltk
+        nltk.download('punkt')
 
 # Function to check if a snippet contains any commercial keyword
 def is_commercial(snippet):
+    commercial_keywords = ["learn more", "visit", "call now", "buy", "order", "subscribe", "save"]
     for keyword in commercial_keywords:
         if keyword.lower() in snippet.lower():
             return True
@@ -31,6 +27,18 @@ def is_commercial(snippet):
 def analyze_sentiment(snippet):
     analysis = TextBlob(snippet)
     return analysis.sentiment.polarity, analysis.sentiment.subjectivity
+
+# Download necessary NLTK data
+download_nltk_data()
+
+# Define search keywords
+search_keywords = [
+    "Education", "Public Education", "Students", "Schools", "Kids", "Elementary School",
+    "Secondary School", "High School", "Charter Schools", "Education Policy", "Teacher",
+    "Classroom", "Curriculum", "Academic", "Lesson", "Homework", "School District", "PTA",
+    "Extracurricular", "Special Education", "Preschool", "Education Reform", "Literacy",
+    "Education Technology", "Tutoring", "School Administration"
+]
 
 # Streamlit app
 st.title("Education News Analysis")
