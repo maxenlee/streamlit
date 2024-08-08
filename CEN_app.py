@@ -3,6 +3,10 @@ import pandas as pd
 from textblob import TextBlob
 import plotly.express as px
 import requests
+import nltk
+
+# Download necessary NLTK data
+nltk.download('punkt')
 
 # Define keywords or phrases that are typically found in commercials
 commercial_keywords = ["learn more", "visit", "call now", "buy", "order", "subscribe", "save"]
